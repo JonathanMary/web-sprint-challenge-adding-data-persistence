@@ -10,8 +10,7 @@ const get = (id) => {
     }
 }
 const add = async (body) => {
-    const { id } = await db('resources')
-            .insert(body)
+    const [id] = await db('resources').insert(body)
     return get(id)
 }
 
