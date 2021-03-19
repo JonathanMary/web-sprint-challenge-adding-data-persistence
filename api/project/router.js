@@ -3,7 +3,24 @@ const router = require('express').Router()
 const Project = require('./model')
 
 router.get('/', (req, res, next) => {
-    res.json("project router");
+    Project.getAll()
+           .then(projects => {
+               const answer = projects.map(project => {
+                   return {
+                       ...project,
+                       project_completed: project["project_completed"] === 1 ? true : false,
+                   }
+               })
+               res.status(200).json(answer);
+           })
+           .catch(next)
+})
+router.post('/', (req, res, next) => {
+    Project.add(req.body)
+           .then(newProject => {
+               res.status(201).json({ ...newProject, "project_completed": newProject["project_completed"] === 1 ? true:false })
+           })
+           .catch(next)
 })
 
 router.use((err, req, res, next) => {
