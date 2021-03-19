@@ -4,6 +4,18 @@ exports.up = function (knex) {
     return knex.schema
         .createTable('project_resources', table => {
             table.increments('project_resources_id')
+            table.integer('project_id')
+                .references('project_id')
+                .inTable('projects')
+                .notNullable()
+                .onDelete('CASCADE')
+                .onUpdate('CASCADE')
+            table.integer('resource_id')
+                .references('resource_id')
+                .inTable('resources')
+                .notNullable()
+                .onDelete('CASCADE')
+                .onUpdate('CASCADE')
         })
 }
 exports.down = function (knex) {
