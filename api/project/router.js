@@ -23,6 +23,25 @@ router.post('/', (req, res, next) => {
            .catch(next)
 })
 
+router.get('/:id/tasks', (req, res, next) => {
+    Project.getTasks(req.params.id)
+           .then(tasks => {
+               const project_tasks = {
+                   project_name: tasks[0]["project_name"],
+                   project_description: tasks[0]["project_description"],
+                   tasks: tasks.map(task => {
+                       return {
+                        task_id: task["task_id"],
+                        task_description: task["task_description"],
+                        task_notes: task["task_notes"],
+                       }
+                   })
+               }
+               res.status(200).json(project_tasks)
+           })
+           .catch(next)
+})
+
 router.use((err, req, res, next) => {
     res.status(500).json({
         message: err.message,

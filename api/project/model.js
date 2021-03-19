@@ -13,8 +13,15 @@ const add = async (body) => {
     return getById(id)
 }
 
+const getTasks = (id) => {
+    return db('projects')
+        .join('tasks', 'tasks.project_id', 'projects.project_id')
+        .where('projects.project_id', id)
+}
+
 module.exports = {
     getAll,
     getById,
     add,
+    getTasks,
 }
