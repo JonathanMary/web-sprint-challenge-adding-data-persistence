@@ -13,7 +13,7 @@ exports.up = function (knex) {
             table.string('task_description').notNullable()
             table.string('task_notes')
             table.boolean('task_completed').defaultTo(false)
-            table.boolean('project_id').references('project_id').inTable('projects')
+            table.boolean('project_id').references('project_id').inTable('projects').notNullable()
         })
 }
 exports.down = function (knex) {

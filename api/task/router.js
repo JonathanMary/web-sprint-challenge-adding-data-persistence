@@ -3,7 +3,21 @@ const router = require('express').Router()
 const Tasks = require('./model')
 
 router.get('/', (req, res, next) => {
-    res.json("task router");
+    Tasks.getAll()
+         .then(tasks => {
+             const cleanTasks = tasks.map(task => {
+                 return { ...task, task_completed: task["task_completed"] === 1 ? true:false }
+             })
+             res.status(200).json(cleanTasks)
+         })
+         .catch(next)
+})
+router.post('/', (req, res, next) => {
+    Tasks.add(req.body)
+         .then(newTask => {
+             res.status(201).json({ ...newTask, task_completed: newTask["task_completed"] === 1 ? true:false })
+         })
+         .catch(next)
 })
 
 router.use((err, req, res, next) => {
